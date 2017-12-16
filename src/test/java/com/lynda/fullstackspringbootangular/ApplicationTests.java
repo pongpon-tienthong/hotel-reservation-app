@@ -1,4 +1,4 @@
-package com.lynda.fullstackspringbootangular.demo;
+package com.lynda.fullstackspringbootangular;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

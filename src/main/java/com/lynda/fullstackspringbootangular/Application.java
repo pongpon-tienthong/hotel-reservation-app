@@ -1,4 +1,4 @@
-package com.lynda.fullstackspringbootangular.demo;
+package com.lynda.fullstackspringbootangular;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
