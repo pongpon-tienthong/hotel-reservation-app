@@ -23,3 +23,19 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# compiled output
+**/angular2/dist
+**/angular2/tmp
+**/angular2/out-tsc
+
+# dependencies
+**/angular2/node_modules
+
+# e2e
+**/angular2/e2e/*.js
+**/angular2/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
