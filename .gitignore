@@ -25,16 +25,16 @@ nbdist/
 .nb-gradle/
 
 # compiled output
-**/angular2/dist
-**/angular2/tmp
-**/angular2/out-tsc
+**/angular4/dist
+**/angular4/tmp
+**/angular4/out-tsc
 
 # dependencies
-**/angular2/node_modules
+**/angular4/node_modules
 
 # e2e
-**/angular2/e2e/*.js
-**/angular2/e2e/*.map
+**/angular4/e2e/*.js
+**/angular4/e2e/*.map
 
 # System Files
 .DS_Store
