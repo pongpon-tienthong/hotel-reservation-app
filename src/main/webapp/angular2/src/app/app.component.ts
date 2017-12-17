@@ -15,6 +15,10 @@ export class AppComponent implements OnInit {
   roomSearch: FormGroup;
   rooms: Room[];
   private baseUrl: string = 'http://localhost:8080';
+  private postUrl: string = `${this.baseUrl}/room/reservation/v1`;
+  currentCheckInVal: string;
+  currentCheckOutVal: string;
+  request: ReserveRoomRequest;
 
   constructor(private http: HttpClient) {
   }
@@ -24,20 +28,32 @@ export class AppComponent implements OnInit {
       checkin: new FormControl(''),
       checkout: new FormControl('')
     });
+
+
+    const roomSearchValueChanges$ = this.roomSearch.valueChanges;
+
+    // subscribe to the stream
+    roomSearchValueChanges$.subscribe(x => {
+      this.currentCheckInVal = x.checkin;
+      this.currentCheckOutVal = x.checkout;
+    });
   }
 
   onSubmit({value, valid}: { value: Roomsearch, valid: boolean }) {
     this.getAll();
   }
 
-  reserveRoom(value: string) {
-    console.log("Room id for reservation:" + value);
-  }
-
   getAll(): void {
     this.http
       .get(`${this.baseUrl}/room/reservation/v1/?checkin=2017-03-18&checkout=2016-03-18`)
       .subscribe(res => this.rooms = res['content']);
+  }
+
+  reserveRoom(roomId: string): void {
+    this.request = new ReserveRoomRequest(roomId, this.currentCheckInVal, this.currentCheckOutVal);
+    this.http.post(this.postUrl, this.request).subscribe(res => {
+      console.log(res);
+    });
   }
 }
 
@@ -51,4 +67,19 @@ export interface Room {
   roomNumber: string;
   price: string;
   links: string;
+}
+
+export class ReserveRoomRequest {
+  roomId: string;
+  checkin: string;
+  checkout: string;
+
+  constructor(roomId: string,
+              checkin: string,
+              checkout: string) {
+
+    this.roomId = roomId;
+    this.checkin = checkin;
+    this.checkout = checkout;
+  }
 }

@@ -39,14 +39,18 @@
                 (ngSubmit)="onSubmit(roomSearch)">
 
             <div class="form-group">
-              <label for="checkin" class="col-4">Check-In:</label>
+              <div class="col-4">
+                <label for="checkin" class="col-4">Check-In:</label>
+              </div>
               <div class="col-8">
                 <input id="checkin" type="date" class="form-control"
                        formControlName="checkin">
               </div>
             </div>
             <div class="form-group">
-              <label for="checkin" class="col-4">Check-Out:</label>
+              <div class="col-4">
+                <label for="checkout" class="col-4">Check-Out:</label>
+              </div>
               <div class="col-8">
                 <input id="checkout" type="date" class="form-control"
                        formControlName="checkout">
