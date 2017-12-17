@@ -1,12 +1,16 @@
 package com.lynda.fullstackspringbootangular.rest;
 
 import com.lynda.fullstackspringbootangular.converter.RoomEntityToReservableRoomResponseConverter;
+import com.lynda.fullstackspringbootangular.entity.ReservationEntity;
 import com.lynda.fullstackspringbootangular.entity.RoomEntity;
 import com.lynda.fullstackspringbootangular.model.request.ReservationRequest;
 import com.lynda.fullstackspringbootangular.model.response.ReservableRoomResponse;
+import com.lynda.fullstackspringbootangular.model.response.ReservationResponse;
 import com.lynda.fullstackspringbootangular.repository.PageableRoomRepository;
+import com.lynda.fullstackspringbootangular.repository.ReservationRepository;
 import com.lynda.fullstackspringbootangular.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,6 +31,12 @@ public class ReservationResource {
 
     @Autowired
     RoomRepository roomRepository;
+
+    @Autowired
+    ConversionService conversionService;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @RequestMapping(path = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Page<ReservableRoomResponse> getAvailableRooms(
@@ -53,11 +63,24 @@ public class ReservationResource {
 
     @RequestMapping(path = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ReservableRoomResponse> createReservation(
+    public ResponseEntity<ReservationResponse> createReservation(
             @RequestBody
-                    ReservationRequest reservationRequest
-    ) {
-        return new ResponseEntity<>(new ReservableRoomResponse(), HttpStatus.CREATED);
+                    ReservationRequest reservationRequest) {
+
+        ReservationEntity reservationEntity = conversionService.convert(reservationRequest, ReservationEntity.class);
+        reservationRepository.save(reservationEntity);
+
+        Optional<RoomEntity> roomEntityOptional = roomRepository.findById(reservationRequest.getRoomId());
+
+        RoomEntity roomEntity = roomEntityOptional.get();
+        roomEntity.addReservationEntity(reservationEntity);
+        roomRepository.save(roomEntity);
+        reservationEntity.setRoomEntity(roomEntity);
+
+        ReservationResponse reservationResponse =
+                conversionService.convert(reservationEntity, ReservationResponse.class);
+
+        return new ResponseEntity<>(reservationResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
