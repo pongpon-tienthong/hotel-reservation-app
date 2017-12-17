@@ -2,9 +2,9 @@
 
 A Hotel Reservation App which allows users to reserve a room on a particular period based on the room availability.
 
-![alt text](http://url/to/img.png)
+![alt text](https://ibin.co/3kxjVk9tR3tt.png)
 
-![alt text](http://url/to/img.png)
+![alt text](https://ibin.co/3kxjKoe4rH6z.png)
 
 ## Getting Started
 
